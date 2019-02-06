@@ -322,6 +322,28 @@ The `NSWorkspace` class is responsible for letting us work with the macOS enviro
 
 
 
+### Color Well
+
+To show the opacity slider on the color well, you need to add this line of code `NSColorPanel.shared.showsAlpha = **true**` in the `AppDelegate.swift` code, under the method `applicationDidFinishLaunching`, so it will look like this:
+
+```swift
+import Cocoa
+
+@NSApplicationMain
+class AppDelegate: NSObject, NSApplicationDelegate {
+
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
+        NSColorPanel.shared.showsAlpha = true
+    }
+}
+```
+
+And now you will see the opacity slider:
+
+![Color Well](./assetts/ColorWellAlpha.png)
+
+
+
 ## Making the app running without a window 
 
 If you want to make your app to run without an initial window, but you want to run it from the statusbar of MacOS, you need to do two steps:
