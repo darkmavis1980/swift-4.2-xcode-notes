@@ -317,6 +317,10 @@ DispatchQueue.global(qos: .utility).async { [unowned self] in
 ### NotificationCenter
 The `NotificationCenter` class is responsible for sending and receiving messages across the app. We could, if we wanted, make some sort of direct method callback using a custom delegate, but settings changes should be global, so this method is preferred.
 
+
+
+## Misc
+
 ### NSWorkspace
 The `NSWorkspace` class is responsible for letting us work with the macOS environment, such as monitoring file and launching apps.
 
@@ -344,6 +348,28 @@ And now you will see the opacity slider:
 
 
 
+### Delegate classes
+
+This is something that to me seemed a bit obscure at first, and it's kinda still is, but a usecase I found that helped me to understand the `delegate` thing in Swift, is the case when you want to link a view class to a text field contained in that view, and you want to access to some properties that are only in the NSTextView class.
+So, imagine you have the case described above, the first thing to do is to select the text field, then `Ctrl+drag`to the `View Controller` in IB, a dropdown will appear and you will have to select `delegate`.
+
+![Ctrl drag](./assetts/delegate.gif)
+
+Once this is done, you can now go to your `ViewController.swift` or whatever you called the class of your View Controller, extend it with `NSTextViewDelegate` class, and this will give you access to the methods of the `NSTextView` object, so for example if you want to execute some code every time the text changes in your text field, you can call it in this way:
+
+```swift
+import Cocoa
+
+class ViewController: NSViewController, NSTextViewDelegate {
+	
+	func textDidChange(_ notification: Notification) {
+        // text is changed, do something
+    }
+}
+```
+
+
+
 ## Making the app running without a window 
 
 If you want to make your app to run without an initial window, but you want to run it from the statusbar of MacOS, you need to do two steps:
@@ -353,6 +379,10 @@ If you want to make your app to run without an initial window, but you want to r
 
 * In the `info.plist` file, add **a new row**, and add the option `Application is agent (UIElement)` and set the value to `YES`
 ![App Is Agent](./assetts/AppIsAgent.png)
+
+
+
+---
 
 ## Gotchas
 
