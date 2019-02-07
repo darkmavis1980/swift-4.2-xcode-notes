@@ -319,6 +319,47 @@ The `NotificationCenter` class is responsible for sending and receiving messages
 
 
 
+## Use cases
+
+### Selecting a file from the system
+
+To select a file the very first thing is to create an instance of  the`NSClickGestureRecognizer` class. This is the class that takes care of click gestures. Then to the *recognizer* we'll add as a selector a method that will be invoked when the user clicks on the element associated with the recognizer, an instance of `NSImageView` in our case.
+The function will then use the `NSOpenPanel` class which is the one that will open the file selection, and has several options you can pass, like which file types to allow, allow multiple selection, etc...
+
+```swift
+import Cocoa
+
+class ViewController: NSViewController {
+    @IBOutlet var imageView: NSImageView!
+    var mySelectedPhoto: NSImage?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // this tells what to do on click
+        let recognizer = NSClickGestureRecognizer(target: self, action: #selector(selectPhoto))
+        // this associate the click gesture to the image view object
+        imageView.addGestureRecognizer(recognizer)
+    }
+ 	
+    @objc func selectPhoto() {
+        let panel = NSOpenPanel()
+        // we tell to the panel to only allow jpg and png file extensions
+        panel.allowedFileTypes = ["jpg", "png"]
+        // we tell to open the file selection, and we pass a closure function 
+        // to be executed when a user selected a file
+        panel.begin { [unowned self] result in 
+        	guard let imageURL = panel.url else { return }
+            // we store the value of the URL of the selected photo
+            self.mySelectedPhoto = NSImage(contentsOf: imageURL)
+        }
+    }
+}
+```
+
+
+
+
+
 ## Misc
 
 ### NSWorkspace
@@ -328,7 +369,7 @@ The `NSWorkspace` class is responsible for letting us work with the macOS enviro
 
 ### Color Well
 
-To show the opacity slider on the color well, you need to add this line of code `NSColorPanel.shared.showsAlpha = **true**` in the `AppDelegate.swift` code, under the method `applicationDidFinishLaunching`, so it will look like this:
+To show the opacity slider on the color well, you need to add this line of code `NSColorPanel.shared.showsAlpha = true` in the `AppDelegate.swift` code, under the method `applicationDidFinishLaunching`, so it will look like this:
 
 ```swift
 import Cocoa
