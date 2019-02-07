@@ -321,7 +321,7 @@ The `NotificationCenter` class is responsible for sending and receiving messages
 
 ## Use cases
 
-### Selecting a file from the system
+### `NSOpenPanel`: Selecting a file from the system
 
 To select a file the very first thing is to create an instance of  the`NSClickGestureRecognizer` class. This is the class that takes care of click gestures. Then to the *recognizer* we'll add as a selector a method that will be invoked when the user clicks on the element associated with the recognizer, an instance of `NSImageView` in our case.
 The function will then use the `NSOpenPanel` class which is the one that will open the file selection, and has several options you can pass, like which file types to allow, allow multiple selection, etc...
@@ -362,6 +362,31 @@ class ViewController: NSViewController {
 ```
 
 
+
+#### `NSSavePanel`: Saving a file or selecting a save folder
+
+This process is very similar to the one above, in fact the `NSSavePanel` class is the parent class of `NSOpenPanel` and it's used in the same exact way.
+
+```swift
+func selectSavePath() {
+        let panel = NSSavePanel()
+        // we tell to open the file selection, and we pass a closure function 
+        // to be executed when a user selected a file
+        panel.begin { [unowned self] result in
+            // this is alternative to checking the .rawValue, you can use the .OK constant
+            if result == .OK {
+                guard let savePath = panel.url else { return }
+                // do whatever you want with the path
+            }
+        }
+    }
+```
+
+
+
+Be aware that if you want to allow files to be saved, if you sandbox your application, you need to enable the `Read/Write` permission in the Project `Capabilities` settings.
+
+![Capabilities](./assetts/FilePermissions.gif)
 
 
 
