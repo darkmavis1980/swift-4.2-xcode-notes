@@ -390,6 +390,25 @@ Be aware that if you want to allow files to be saved, if you sandbox your applic
 
 
 
+### Call custom function on menu item 
+
+If you want to execute a custom function from a menu item it's easy enough, but you need to do a few steps:
+
+##### Create your custom function
+
+In your View Controller, add a function with the `@IBAction` property:
+
+```swift
+@IBAction func doMyStuff(_ sender: Any) {
+    // do something here
+}
+```
+
+Once you have your function, you will have to go to the `Main.storyboard` file, click on `Application Scene > Main Menu` and expand the menu you want to add your custom menu item, open the **Library** and search for `Menu Item`, drag it into your menu, and here in the inspector you can change the label and assign the Key Equivalent if you desire.
+Now you need to associate the Menu Item with the `First Responder`, which tells the app what to execute once the Menu Item is clicked. So select your Menu Item, `ctrl + drag` to the `First Responder`, and then you will be prompted with a list of methods to call, select your `doMyStuff` function and you are ready to go.
+
+![First Responder](./assetts/MenuItemFirstResponder.gif)
+
 ## Misc
 
 ### NSWorkspace
