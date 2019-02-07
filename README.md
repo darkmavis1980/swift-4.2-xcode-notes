@@ -347,10 +347,15 @@ class ViewController: NSViewController {
         panel.allowedFileTypes = ["jpg", "png"]
         // we tell to open the file selection, and we pass a closure function 
         // to be executed when a user selected a file
-        panel.begin { [unowned self] result in 
-			guard let imageURL = panel.url else { return }
-			// we store the value of the URL of the selected photo
-			self.mySelectedPhoto = NSImage(contentsOf: imageURL)
+        panel.begin { [unowned self] result in
+            // if resuls.rawValue is equal to 1, which means that
+            // the user pressed the OK button, or 0 if the user 
+            // pressed the cancel button
+            if result.rawValue == 1 {
+                guard let imageURL = panel.url else { return }
+                // we store the value of the URL of the selected photo
+                self.mySelectedPhoto = NSImage(contentsOf: imageURL)
+            }
         }
     }
 }
