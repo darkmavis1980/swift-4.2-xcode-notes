@@ -348,9 +348,9 @@ class ViewController: NSViewController {
         // we tell to open the file selection, and we pass a closure function 
         // to be executed when a user selected a file
         panel.begin { [unowned self] result in 
-        	guard let imageURL = panel.url else { return }
-            // we store the value of the URL of the selected photo
-            self.mySelectedPhoto = NSImage(contentsOf: imageURL)
+			guard let imageURL = panel.url else { return }
+			// we store the value of the URL of the selected photo
+			self.mySelectedPhoto = NSImage(contentsOf: imageURL)
         }
     }
 }
