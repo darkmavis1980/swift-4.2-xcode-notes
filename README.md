@@ -1,5 +1,12 @@
 # Swift & XCode Notes
 
+### Premise
+
+These are the notes I took while doing the excellent course on Udemy by [Stephen DeStefano](https://github.com/sd961960) titled "[Hacking with macOS and Swift 4](https://www.udemy.com/hacking-with-macos-and-swift4/)".
+
+---
+
+
 ### NSViewControllers
 
 This is the base class used to extends all the view controller classes you will need for the views.
@@ -217,7 +224,7 @@ perform(#selector(log), with: "Hello world", afterDelay: 1)
 
 
 
-### GCD
+### <a name="gcd"></a>GCD
 
 The **GCD**, or **Grand Central Dispatch**, it's used to run part of the application concurrently on multicore hardware by submitting the work to dispatch queues, it can be use to run async or sync jobs. 
 To run work asynchronously, you use `DispatchQueue`, then a queue name, then call `async()`. This uses trailing closure syntax, which makes your method call look like a code block. You provide the code you want to run as a closure (similar to callbacks on promises in JavaScript).
@@ -316,6 +323,72 @@ DispatchQueue.global(qos: .utility).async { [unowned self] in
 
 ### NotificationCenter
 The `NotificationCenter` class is responsible for sending and receiving messages across the app. We could, if we wanted, make some sort of direct method callback using a custom delegate, but settings changes should be global, so this method is preferred.
+
+
+
+## Dynamic properties
+
+Quoting from the course:
+
+> By default, setting a Swift property is done by modifying it directly using a technique called static dispatch. It's `static` because your property is in one place on memory, and Swift can just adjust it directly.
+>
+> In Objective-C, properties were always adjusted using method calls, either explicitly or implicitly, using a technique called "dynamic dispatch" - the Objective-C runtime would look up the correct method to call when the code was running, then make it happen.
+>
+> Objective-C's properties are quite quirky compared to Swift; it provides a separate system known as "instance variables" if you want to adjust values without method calls.
+>
+> Swift's code is faster because it avoids the lookup and method call, but Objective-C's version allows all sort of interesting hackery: the method call can be intercepted, rewritten, observed by other parts of the system, and more.
+>
+> This is where the **dynamic** keyword comes in: it lets us make a Swift property use the older Objective-C runtime, thus enabling the hackery. In this case, it allows Objective-C code - bindins - to access and manipulate the data freely, just by adding the single keyword to our property.
+
+## Data Types
+
+Cocoa has the following Data types:
+
+* `Strings`
+* `Integers`
+* `Floats`
+* `Doubles`
+* `Booleans`
+* `Dates`
+* `Arrays[]`
+* `Dictionaries[:]`
+
+But you can also create your own data type using `NSCoding`, which requires two methods:
+
+* `init(coder:)` Creates a new instance of your data type, using saved values
+* `encode(with:)` Converts your data type to saved values
+
+To write a value use this code:
+
+```swift
+aCoder.encode("Some value", forKey: "your key name")
+```
+
+To read it back
+
+```swift
+let value = aDecoder.decodeObject(forKey: "your key name") as! String
+```
+
+##### Notes
+
+> The `init()` method for `NSCoding` is written with `init?()` because it's bailable - it might return nil
+
+And also:
+
+> The `init()` method for `NSCoding` must be written using the `required` modifier, something like this:
+>
+> ```swift
+> required init?(coder aDecoder: NSCoder) {}
+> ```
+>
+> If you don't want to use `required` here, you can also declare the whole class as final like this
+>
+> ```swift
+> final class Screenshot: NSObject, NSCoding {}
+> ```
+>
+> But this will prevent somebody else to extend from your class
 
 
 
@@ -542,3 +615,10 @@ func callDoSomething() {
 
 These two methods are almost identical, the difference between the two is that `string` returns a string **optionally**, so it's up to the developer to check if it's empty or not, while `stringValue` **always return a value**, so if the variable passed is undefined or *nil*, it will return an empty string `""`.
 This is the same also for `array` and `arrayValue`, `double` and `doubleValue`, `int` and `intValue` and so on.
+
+
+
+## Useful links
+
+* [Macos View Controllers Tutorial](https://www.raywenderlich.com/704-macos-view-controllers-tutorial)
+
